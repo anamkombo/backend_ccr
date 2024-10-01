@@ -20,6 +20,9 @@ const internalAssy = require("./controllers/internal/assy");
 const internalCasting = require("./controllers/internal/casting");
 const internalMachining = require("./controllers/internal/machining");
 
+const filesAssets = require("./controllers/files/assets");
+const filesProfile = require("./controllers/files/profile");
+
 // Load Functions
 const sendData = require("./functions/sendData");
 
@@ -50,6 +53,10 @@ app.use("/api/users", userAccount);
 app.use("/api/internal", internalAssy);
 app.use("/api/internal", internalCasting);
 app.use("/api/internal", internalMachining);
+
+//===============[File Routes]=================//
+app.use("/files", filesAssets);
+app.use("/files", filesProfile);
 
 //handler if route not found
 app.use((req, res) => {
