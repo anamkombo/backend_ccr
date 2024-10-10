@@ -7,10 +7,11 @@ const prisma = new PrismaClient();
 const dotenv = require("dotenv");
 dotenv.config();
 
-const saveTimeSet = require("../../functions/generateday");
+const saveTimeSet = require("../../../functions/generateday");
 
-router.post("/machining/edit", async (req, res) => {
+router.post("/ccr/machining/edit", async (req, res) => {
   const {
+    state,
     CB_conv_planning,
     CB_conv_actual,
     CB_hev_planning,
@@ -42,6 +43,10 @@ router.post("/machining/edit", async (req, res) => {
 
     if (role !== "admin") {
       return res.status(403).json({ error: "Forbidden" });
+    }
+
+    if(state !== "NS" && state !== "DS") {
+      return res.status(400).json({ error: "Invalid state" });
     }
 
     //get data of id from timeSet

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
  * @param {Date|null} filterDate - The date to filter logs by. If null, fetch logs for today.
  * @returns {Promise<Array>} - A promise that resolves to an array of logs with calculated differences.
  */
-async function sendData(filterDate = null) {
+async function sendDataControl(filterDate = null) {
   try {
     let startOfDay, endOfDay;
 
@@ -27,7 +27,7 @@ async function sendData(filterDate = null) {
     }
 
     // Fetch data from Assy, Casting, and Machining models
-    const assyData = await prisma.assy.findMany({
+    const assyData = await prisma.controlAssy.findMany({
       where: {
         createdAt: {
           gte: startOfDay,
@@ -36,7 +36,7 @@ async function sendData(filterDate = null) {
       },
     });
 
-    const castingData = await prisma.casting.findMany({
+    const castingData = await prisma.controlCasting.findMany({
       where: {
         createdAt: {
           gte: startOfDay,
@@ -45,7 +45,7 @@ async function sendData(filterDate = null) {
       },
     });
 
-    const machiningData = await prisma.machining.findMany({
+    const machiningData = await prisma.controlMachining.findMany({
       where: {
         createdAt: {
           gte: startOfDay,
@@ -56,65 +56,67 @@ async function sendData(filterDate = null) {
 
     // Function to calculate differences between planning and actual values
     const calculateDifferences = (data, planningKeys, actualKeys) => {
-      return data.map(entry => {
+      return data.map((entry) => {
         const differences = {};
         planningKeys.forEach((planningKey, index) => {
           const actualKey = actualKeys[index];
           const valueDiff = entry[actualKey] - entry[planningKey];
-    
+
           // Tambahkan simbol + atau - berdasarkan nilai difference
           const diffString = valueDiff > 0 ? `+${valueDiff}` : `${valueDiff}`;
-          
+
           differences[`${planningKey}_diff`] = diffString;
         });
         return { ...entry, ...differences };
       });
-    };    
+    };
 
     // Define the keys for planning and actual values for each model
-    const assyPlanningKeys = [
-      "NR_elbow_planning", "NR_ball_planning", "NR_hev_planning",
-      "NR_2_elbow_planning", "NR_2_ball_planning", "NR_2_hev_planning"
-    ];
-    const assyActualKeys = [
-      "NR_elbow_actual", "NR_ball_actual", "NR_hev_actual",
-      "NR_2_elbow_actual", "NR_2_ball_actual", "NR_2_hev_actual"
-    ];
+    const assyPlanningKeys = ["planning"];
+    const assyActualKeys = ["actual"];
 
-    const castingPlanningKeys = [
-      "LP_planning", "DC_conv_planning", "DC_hev_planning", "CB_conv_planning",
-      "CB_hev_planning", "CH_conv_planning", "CH_hev_planning", "CA_IN_conv_planning",
-      "CA_IN_hev_planning", "CA_EX_conv_planning", "CA_EX_hev_planning", "CR_1NR_planning",
-      "CR_2NR_planning", "elbow_1NR_planning", "ball_1NR_planning", "hev_1NR_planning",
-      "elbow_2NR_planning", "ball_2NR_planning", "hev_2NR_planning"
-    ];
-    const castingActualKeys = [
-      "LP_actual", "DC_conv_actual", "DC_hev_actual", "CB_conv_actual",
-      "CB_hev_actual", "CH_conv_actual", "CH_hev_actual", "CA_IN_conv_actual",
-      "CA_IN_hev_actual", "CA_EX_conv_actual", "CA_EX_hev_actual", "CR_1NR_actual",
-      "CR_2NR_actual", "elbow_1NR_actual", "ball_1NR_actual", "hev_1NR_actual",
-      "elbow_2NR_actual", "ball_2NR_actual", "hev_2NR_actual"
-    ];
+    const castingPlanningKeys = ["cast_dc_planning", "cast_lp_planning"];
+    const castingActualKeys = ["cast_dc_actual", "cast_lp_actual"];
 
     const machiningPlanningKeys = [
-      "CB_conv_planning", "CB_hev_planning", "CH_conv_planning",
-      "CH_hev_planning", "CA_IN_conv_planning", "CA_IN_hev_planning"
+      "cylblock_planning",
+      "cylhead_planning",
+      "crankshaft_1nr_planning",
+      "crankshaft_2nr_planning",
+      "camshaft_conv_planning",
+      "camshaft_hv_planning",
     ];
     const machiningActualKeys = [
-      "CB_conv_actual", "CB_hev_actual", "CH_conv_actual",
-      "CH_hev_actual", "CA_IN_conv_actual", "CA_IN_hev_actual"
+      "cylblock_actual",
+      "cylhead_actual",
+      "crankshaft_1nr_actual",
+      "crankshaft_2nr_actual",
+      "camshaft_conv_actual",
+      "camshaft_hv_actual",
     ];
 
     // Calculate differences for each dataset
-    const assyWithDifferences = calculateDifferences(assyData, assyPlanningKeys, assyActualKeys);
-    const castingWithDifferences = calculateDifferences(castingData, castingPlanningKeys, castingActualKeys);
-    const machiningWithDifferences = calculateDifferences(machiningData, machiningPlanningKeys, machiningActualKeys);
+    const assyWithDifferences = calculateDifferences(
+      assyData,
+      assyPlanningKeys,
+      assyActualKeys
+    );
+    const castingWithDifferences = calculateDifferences(
+      castingData,
+      castingPlanningKeys,
+      castingActualKeys
+    );
+    const machiningWithDifferences = calculateDifferences(
+      machiningData,
+      machiningPlanningKeys,
+      machiningActualKeys
+    );
 
     // Combine the results
     const allDataWithDifferences = {
       assy: assyWithDifferences,
       casting: castingWithDifferences,
-      machining: machiningWithDifferences
+      machining: machiningWithDifferences,
     };
 
     return allDataWithDifferences;
@@ -124,5 +126,5 @@ async function sendData(filterDate = null) {
   }
 }
 
-module.exports = sendData;
-//sendData(new Date("2024-10-01")).then(console.log).catch(console.error);
+module.exports = sendDataControl;
+//sendDataControl(new Date("2024-10-01")).then(console.log).catch(console.error);

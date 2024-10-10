@@ -16,9 +16,15 @@ const usersRegister = require("./controllers/users/register");
 const userEdit = require("./controllers/users/edit");
 const userAccount = require("./controllers/users/account");
 
-const internalAssy = require("./controllers/internal/assy");
-const internalCasting = require("./controllers/internal/casting");
-const internalMachining = require("./controllers/internal/machining");
+const iternalAssyCCR = require("./controllers/internal/ccr/assy");
+const internalCastingCCR = require("./controllers/internal/ccr/casting");
+const internalMachiningCCR = require("./controllers/internal/ccr/machining");
+const internalDataCCR = require("./controllers/internal/ccr/data");
+
+const internalAssyControl = require("./controllers/internal/control/assy");
+const internalCastingControl = require("./controllers/internal/control/casting");
+const internalMachiningControl = require("./controllers/internal/control/machining");
+const internalDataControl = require("./controllers/internal/control/data");
 
 const filesAssets = require("./controllers/files/assets");
 const filesProfile = require("./controllers/files/profile");
@@ -49,10 +55,17 @@ app.use("/api/users", usersRegister);
 app.use("/api/users", userEdit);
 app.use("/api/users", userAccount);
 
-//===============[Internal Routes]=================//
-app.use("/api/internal", internalAssy);
-app.use("/api/internal", internalCasting);
-app.use("/api/internal", internalMachining);
+//===============[Internal Routes (CCR)]=================//
+app.use("/api/internal", iternalAssyCCR);
+app.use("/api/internal", internalCastingCCR);
+app.use("/api/internal", internalMachiningCCR);
+app.use("/api/internal", internalDataCCR);
+
+//==============[Internal Routes (Control)]================//
+app.use("/api/internal", internalAssyControl);
+app.use("/api/internal", internalCastingControl);
+app.use("/api/internal", internalMachiningControl);
+app.use("/api/internal", internalDataControl);
 
 //===============[File Routes]=================//
 app.use("/files", filesAssets);

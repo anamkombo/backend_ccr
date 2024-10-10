@@ -7,10 +7,11 @@ const prisma = new PrismaClient();
 const dotenv = require("dotenv");
 dotenv.config();
 
-const saveTimeSet = require("../../functions/generateday");
+const saveTimeSet = require("../../../functions/generateday");
 
-router.post("/casting/edit", async (req, res) => {
+router.post("/ccr/casting/edit", async (req, res) => {
   const {
+    state,
     lp_planning,
     lp_actual,
     dc_conv_planning,
@@ -72,6 +73,10 @@ router.post("/casting/edit", async (req, res) => {
 
     if (role !== "admin") {
       return res.status(403).json({ error: "Forbidden" });
+    }
+
+    if (state !== "NS" && state !== "DS") {
+      return res.status(400).json({ error: "Invalid state" });
     }
 
     //get data of id from timeSet
@@ -137,6 +142,273 @@ router.post("/casting/edit", async (req, res) => {
           actual_2NR: 0,
         },
       });
+
+      let LP_planning_Value = 0;
+      let LP_actual_Value = 0;
+      let DC_conv_planning_Value = 0;
+      let DC_conv_actual_Value = 0;
+      let DC_hev_planning_Value = 0;
+      let DC_hev_actual_Value = 0;
+      let CB_conv_planning_Value = 0;
+      let CB_conv_actual_Value = 0;
+      let CB_hev_planning_Value = 0;
+      let CB_hev_actual_Value = 0;
+      let CH_conv_planning_Value = 0;
+      let CH_conv_actual_Value = 0;
+      let CH_hev_planning_Value = 0;
+      let CH_hev_actual_Value = 0;
+      let CA_IN_conv_planning_Value = 0;
+      let CA_IN_conv_actual_Value = 0;
+      let CA_IN_hev_planning_Value = 0;
+      let CA_IN_hev_actual_Value = 0;
+      let CA_EX_conv_planning_Value = 0;
+      let CA_EX_conv_actual_Value = 0;
+      let CA_EX_hev_planning_Value = 0;
+      let CA_EX_hev_actual_Value = 0;
+      let CR_1NR_planning_Value = 0;
+      let CR_1NR_actual_Value = 0;
+      let CR_2NR_planning_Value = 0;
+      let CR_2NR_actual_Value = 0;
+      let elbow_1NR_planning_Value = 0;
+      let elbow_1NR_actual_Value = 0;
+      let ball_1NR_planning_Value = 0;
+      let ball_1NR_actual_Value = 0;
+      let hev_1NR_planning_Value = 0;
+      let hev_1NR_actual_Value = 0;
+      let elbow_2NR_planning_Value = 0;
+      let elbow_2NR_actual_Value = 0;
+      let ball_2NR_planning_Value = 0;
+      let ball_2NR_actual_Value = 0;
+      let hev_2NR_planning_Value = 0;
+      let hev_2NR_actual_Value = 0;
+      let planning_1NR_Value = 0;
+      let actual_1NR_Value = 0;
+      let planning_2NR_Value = 0;
+      let actual_2NR_Value = 0;
+
+      if (lp_planning) {
+        LP_planning_Value = lp_planning;
+      }
+
+      if (lp_actual) {
+        LP_actual_Value = lp_actual;
+      }
+
+      if (dc_conv_planning) {
+        DC_conv_planning_Value = dc_conv_planning;
+      }
+
+      if (dc_conv_actual) {
+        DC_conv_actual_Value = dc_conv_actual;
+      }
+
+      if (dc_hev_planning) {
+        DC_hev_planning_Value = dc_hev_planning;
+      }
+
+      if (dc_hev_actual) {
+        DC_hev_actual_Value = dc_hev_actual;
+      }
+
+      if (cb_conv_planning) {
+        CB_conv_planning_Value = cb_conv_planning;
+      }
+
+      if (cb_conv_actual) {
+        CB_conv_actual_Value = cb_conv_actual;
+      }
+
+      if (cb_hev_planning) {
+        CB_hev_planning_Value = cb_hev_planning;
+      }
+
+      if (cb_hev_actual) {
+        CB_hev_actual_Value = cb_hev_actual;
+      }
+
+      if (ch_conv_planning) {
+        CH_conv_planning_Value = ch_conv_planning;
+      }
+
+      if (ch_conv_actual) {
+        CH_conv_actual_Value = ch_conv_actual;
+      }
+
+      if (ch_hev_planning) {
+        CH_hev_planning_Value = ch_hev_planning;
+      }
+
+      if (ch_hev_actual) {
+        CH_hev_actual_Value = ch_hev_actual;
+      }
+
+      if (ca_in_conv_planning) {
+        CA_IN_conv_planning_Value = ca_in_conv_planning;
+      }
+
+      if (ca_in_conv_actual) {
+        CA_IN_conv_actual_Value = ca_in_conv_actual;
+      }
+
+      if (ca_in_hev_planning) {
+        CA_IN_hev_planning_Value = ca_in_hev_planning;
+      }
+
+      if (ca_in_hev_actual) {
+        CA_IN_hev_actual_Value = ca_in_hev_actual;
+      }
+
+      if (ca_ex_conv_planning) {
+        CA_EX_conv_planning_Value = ca_ex_conv_planning;
+      }
+
+      if (ca_ex_conv_actual) {
+        CA_EX_conv_actual_Value = ca_ex_conv_actual;
+      }
+
+      if (ca_ex_hev_planning) {
+        CA_EX_hev_planning_Value = ca_ex_hev_planning;
+      }
+
+      if (ca_ex_hev_actual) {
+        CA_EX_hev_actual_Value = ca_ex_hev_actual;
+      }
+
+      if (cr_1nr_planning) {
+        CR_1NR_planning_Value = cr_1nr_planning;
+      }
+
+      if (cr_1nr_actual) {
+        CR_1NR_actual_Value = cr_1nr_actual;
+      }
+
+      if (cr_2nr_planning) {
+        CR_2NR_planning_Value = cr_2nr_planning;
+      }
+
+      if (cr_2nr_actual) {
+        CR_2NR_actual_Value = cr_2nr_actual;
+      }
+
+      if (elbow_1nr_planning) {
+        elbow_1NR_planning_Value = elbow_1nr_planning;
+      }
+
+      if (elbow_1nr_actual) {
+        elbow_1NR_actual_Value = elbow_1nr_actual;
+      }
+
+      if (ball_1nr_planning) {
+        ball_1NR_planning_Value = ball_1nr_planning;
+      }
+
+      if (ball_1nr_actual) {
+        ball_1NR_actual_Value = ball_1nr_actual;
+      }
+
+      if (hev_1nr_planning) {
+        hev_1NR_planning_Value = hev_1nr_planning;
+      }
+
+      if (hev_1nr_actual) {
+        hev_1NR_actual_Value = hev_1nr_actual;
+      }
+
+      if (elbow_2nr_planning) {
+        elbow_2NR_planning_Value = elbow_2nr_planning;
+      }
+
+      if (elbow_2nr_actual) {
+        elbow_2NR_actual_Value = elbow_2nr_actual;
+      }
+
+      if (ball_2nr_planning) {
+        ball_2NR_planning_Value = ball_2nr_planning;
+      }
+
+      if (ball_2nr_actual) {
+        ball_2NR_actual_Value = ball_2nr_actual;
+      }
+
+      if (hev_2nr_planning) {
+        hev_2NR_planning_Value = hev_2nr_planning;
+      }
+
+      if (hev_2nr_actual) {
+        hev_2NR_actual_Value = hev_2nr_actual;
+      }
+
+      if (planning_1nr) {
+        planning_1NR_Value = planning_1nr;
+      }
+
+      if (actual_1nr) {
+        actual_1NR_Value = actual_1nr;
+      }
+
+      if (planning_2nr) {
+        planning_2NR_Value = planning_2nr;
+      }
+
+      if (actual_2nr) {
+        actual_2NR_Value = actual_2nr;
+      }
+
+      //update the value of edited field
+      const updatedCasting = await prisma.casting.update({
+        where: {
+          id_casting: timeSet.generatedId,
+        },
+        data: {
+          state: timeSet.state,
+          LP_planning: LP_planning_Value,
+          LP_actual: LP_actual_Value,
+          DC_conv_planning: DC_conv_planning_Value,
+          DC_conv_actual: DC_conv_actual_Value,
+          DC_hev_planning: DC_hev_planning_Value,
+          DC_hev_actual: DC_hev_actual_Value,
+          CB_conv_planning: CB_conv_planning_Value,
+          CB_conv_actual: CB_conv_actual_Value,
+          CB_hev_planning: CB_hev_planning_Value,
+          CB_hev_actual: CB_hev_actual_Value,
+          CH_conv_planning: CH_conv_planning_Value,
+          CH_conv_actual: CH_conv_actual_Value,
+          CH_hev_planning: CH_hev_planning_Value,
+          CH_hev_actual: CH_hev_actual_Value,
+          CA_IN_conv_planning: CA_IN_conv_planning_Value,
+          CA_IN_conv_actual: CA_IN_conv_actual_Value,
+          CA_IN_hev_planning: CA_IN_hev_planning_Value,
+          CA_IN_hev_actual: CA_IN_hev_actual_Value,
+          CA_EX_conv_planning: CA_EX_conv_planning_Value,
+          CA_EX_conv_actual: CA_EX_conv_actual_Value,
+          CA_EX_hev_planning: CA_EX_hev_planning_Value,
+          CA_EX_hev_actual: CA_EX_hev_actual_Value,
+          CR_1NR_planning: CR_1NR_planning_Value,
+          CR_1NR_actual: CR_1NR_actual_Value,
+          CR_2NR_planning: CR_2NR_planning_Value,
+          CR_2NR_actual: CR_2NR_actual_Value,
+          elbow_1NR_planning: elbow_1NR_planning_Value,
+          elbow_1NR_actual: elbow_1NR_actual_Value,
+          ball_1NR_planning: ball_1NR_planning_Value,
+          ball_1NR_actual: ball_1NR_actual_Value,
+          hev_1NR_planning: hev_1NR_planning_Value,
+          hev_1NR_actual: hev_1NR_actual_Value,
+          elbow_2NR_planning: elbow_2NR_planning_Value,
+          elbow_2NR_actual: elbow_2NR_actual_Value,
+          ball_2NR_planning: ball_2NR_planning_Value,
+          ball_2NR_actual: ball_2NR_actual_Value,
+          hev_2NR_planning: hev_2NR_planning_Value,
+          hev_2NR_actual: hev_2NR_actual_Value,
+          planning_1NR: planning_1NR_Value,
+          actual_1NR: actual_1NR_Value,
+          planning_2NR: planning_2NR_Value,
+          actual_2NR: actual_2NR_Value,
+        },
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Casting data created & Updated", updatedCasting });
     }
 
     //just detect the value of edited field

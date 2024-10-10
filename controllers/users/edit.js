@@ -62,9 +62,9 @@ router.post("/edit", async (req, res) => {
       phoned = phone;
     }
 
-    let noReg = account.contact.noReg;
+    let noReged = account.contact.noReg;
     if (noReg) {
-      noReg = noReg;
+      noReged = noReg;
     }
 
     const updatedAccount = await prisma.account.update({
@@ -79,7 +79,7 @@ router.post("/edit", async (req, res) => {
             firstName: firstNamed,
             lastName: lastNamed,
             phone: phoned,
-            noReg: noReg,
+            noReg: noReged,
           },
         },
       },
